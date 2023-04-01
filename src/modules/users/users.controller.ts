@@ -1,6 +1,6 @@
 import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from '../entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { UsersService } from './users.service';
 import { AuthController } from '../auth/auth.controller';
 @Controller('users')
