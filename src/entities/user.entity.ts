@@ -2,7 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  // ManyToOne,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   // PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -22,14 +23,16 @@ export class User {
   @Column()
   password: string;
 
-  // @ManyToOne(() => User, (update_user) => update_user.phone)
-  // create_user: User;
+  @ManyToOne(() => User, (update_user) => update_user.userId)
+  @JoinColumn({ name: 'create_user' })
+  createUser: User;
 
   @CreateDateColumn({ name: 'create_time' })
   createTime!: Date;
 
-  // @ManyToOne(() => User, (update_user) => update_user.phone)
-  // update_user: User;
+  @ManyToOne(() => User, (update_user) => update_user.userId)
+  @JoinColumn({ name: 'update_user' })
+  updateUser: User;
 
   @UpdateDateColumn({ name: 'update_time' })
   updateTime!: Date;

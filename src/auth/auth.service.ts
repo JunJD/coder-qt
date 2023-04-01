@@ -10,6 +10,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // 登录 生成token
   async signIn(
     createUserDto: CreateUserDto,
   ): Promise<{ access_token: string }> {

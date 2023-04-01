@@ -14,6 +14,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // 登录
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -24,6 +25,7 @@ export class AuthController {
     });
   }
 
+  // 获取用户信息
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

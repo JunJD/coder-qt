@@ -12,22 +12,28 @@ export class UsersService {
   ) {}
 
   // 创建用户
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
+    // 通过手机号查询创建人
+    const adminUser = await this.findOneByPhone(createUserDto.sub);
     user.phone = createUserDto.phone;
     user.userName = createUserDto.userName;
     user.password = createUserDto.password;
     user.createTime = new Date();
-
+    user.updateTime = new Date();
+    user.createUser = adminUser;
+    user.updateUser = adminUser;
     return this.usersRepository.save(user);
   }
 
-  // 查询所有用户
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  // 查询所有用户,不包含软删的
+  findAll(): Promise<User[]> {
+    const queryBuilder = this.usersRepository.createQueryBuilder('user');
+    return queryBuilder.where('user.is_deleted = 0').getMany();
   }
+
   // 根据手机号查询用户
-  async findOneByPhone(phone: string): Promise<User> {
+  findOneByPhone(phone: string): Promise<User> {
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     return queryBuilder.where('user.user_id = :phone', { phone }).getOne();
   }
