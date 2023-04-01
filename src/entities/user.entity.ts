@@ -14,7 +14,7 @@ export class User {
   // id: number;
 
   @PrimaryColumn({ name: 'user_id' })
-  phone: number;
+  phone: string;
 
   @Column({ name: 'user_name' })
   userName: string;
@@ -36,4 +36,5 @@ export class User {
 
   @Column({ default: 0, name: 'is_deleted' })
   isDeleted: number;
+  userId: any;
 }
