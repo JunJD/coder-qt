@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 
 // 全局模块
+@Global()
 @Module({
   imports: [
     UsersModule,
@@ -19,6 +20,7 @@ import { jwtConstants } from './constants';
     }),
   ],
   providers: [
+    AuthController,
     AuthService,
     // 全局守卫，所有路由都会被守卫拦截
     {
@@ -28,6 +30,6 @@ import { jwtConstants } from './constants';
   ],
   controllers: [AuthController],
   // 导出服务，方便其他模块使用
-  exports: [AuthService],
+  exports: [AuthService, AuthController],
 })
 export class AuthModule {}
