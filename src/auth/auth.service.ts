@@ -11,9 +11,7 @@ export class AuthService {
   ) {}
 
   // 登录 生成token
-  async signIn(
-    createUserDto: CreateUserDto,
-  ): Promise<{ access_token: string }> {
+  async signIn(createUserDto: CreateUserDto): Promise<{ accessToken: string }> {
     const user = await this.usersService.findOneByPhone(createUserDto.phone);
     if (user?.password !== createUserDto.password) {
       console.log(user, createUserDto.password);
@@ -22,7 +20,7 @@ export class AuthService {
     const payload = { username: user.userName, sub: user.phone };
     return {
       ...payload,
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
