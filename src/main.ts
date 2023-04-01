@@ -33,10 +33,16 @@ async function bootstrap(wifiIp) {
     .setTitle('coder-qt API')
     .setDescription('The coder-qt API description')
     .setVersion('1.0')
-    .addTag('users')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
+  document.components.securitySchemes = {
+    api_key: {
+      type: 'apiKey',
+      name: 'Origin-Agent-Cluster',
+      in: 'header',
+    },
+  };
   SwaggerModule.setup('api', app, document);
   let port = 3000;
   while (true) {

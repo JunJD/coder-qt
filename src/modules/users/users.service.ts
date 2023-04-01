@@ -42,6 +42,15 @@ export class UsersService {
   async removeByPhone(phone: string): Promise<void> {
     const user = await this.findOneByPhone(phone);
     user.isDeleted = 1;
-    await this.usersRepository.save(user);
+    this.usersRepository.save(user);
+  }
+
+  // 修改用户
+  async update(createUserDto: CreateUserDto): Promise<User> {
+    const user = await this.findOneByPhone(createUserDto.phone);
+    user.userName = createUserDto.userName;
+    user.password = createUserDto.password;
+    user.updateTime = new Date();
+    return this.usersRepository.save(user);
   }
 }
