@@ -1,15 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from 'src/entities/role.entity';
-
 @Injectable()
-export class RoleService {
+export class RoleService implements OnModuleInit {
   constructor(
     @InjectRepository(Role)
     private readonly usersRepository: Repository<Role>,
   ) {}
+
+  // 模块初始化
+  async onModuleInit() {
+    // 创建默认角色
+    const defaultRole = await this.findOneByRoleName('user');
+    if (!defaultRole) {
+      await this.create({
+        roleName: 'user',
+        sub: '88888888',
+      });
+    }
+  }
 
   // 创建用户
   async create(createRoleDto: CreateRoleDto): Promise<Role> {

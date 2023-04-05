@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  forwardRef,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CorsMiddleware } from './middlewares/cors.middlewares';
 import { AuthModule } from './modules/auth/auth.module';
@@ -6,8 +11,8 @@ import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 @Module({
   imports: [
-    AuthModule,
-    UsersModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => UsersModule),
     RoleModule,
     TypeOrmModule.forRoot({
       type: 'mysql',

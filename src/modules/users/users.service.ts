@@ -1,25 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '../../entities/user.entity';
 import { UserRole } from '../../entities/user-role.entity';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     @InjectRepository(UserRole)
     private readonly userRoleRepository: Repository<UserRole>,
+    private readonly roleService: RoleService,
   ) {}
+
+  // 模块初始化
+  async onModuleInit() {
+    // 创建默认账号
+    const defaultUser = await this.findOneByPhone('88888888');
+    if (!defaultUser) {
+      await this.create({
+        phoneNumber: '88888888',
+        userName: 'admin',
+        password: '123456',
+      });
+    }
+  }
 
   // 创建用户
   async create(createUserDto: CreateUserDto): Promise<User> {
+    // 默认角色
+    const defaultRole = await this.roleService.findOneByRoleName('user');
+
+    // 创建用户角色关联
+    await this.userRoleRepository.save({
+      roleId: defaultRole.roleId,
+      UserId: createUserDto.phoneNumber,
+    });
+
     return this.usersRepository.save({
       ...createUserDto,
       // 这里的sub是指创建人的手机号，是从token中获取的
       creatorId: createUserDto.sub,
+      userRoles: [
+        {
+          roleId: defaultRole.roleId,
+        },
+      ],
     });
   }
 

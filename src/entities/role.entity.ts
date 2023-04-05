@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Common } from './common.entity';
+import { UserRole } from './user-role.entity';
 
 @Entity('sys_role')
 export class Role extends Common {
@@ -8,4 +9,7 @@ export class Role extends Common {
 
   @Column({ name: 'role_name' })
   roleName: string;
+
+  @OneToMany(() => UserRole, (userRole) => userRole.roleId)
+  userRoles: UserRole[];
 }
