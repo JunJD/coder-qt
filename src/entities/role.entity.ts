@@ -1,37 +1,11 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { User } from './user.entity';
+import { Column, Entity } from 'typeorm';
+import { Common } from './common.entity';
 
 @Entity('sys_role')
-export class Role {
-  @PrimaryGeneratedColumn({ name: 'role_id' })
+export class Role extends Common {
+  @Column({ unique: true, name: 'role_id', generated: 'uuid', nullable: false })
   roleId: string;
 
   @Column({ name: 'role_name' })
   roleName: string;
-
-  @ManyToOne(() => User, (update_user) => update_user.userId)
-  @JoinColumn({ name: 'create_user' })
-  createUser: User;
-
-  @CreateDateColumn({ name: 'create_time' })
-  createTime!: Date;
-
-  @ManyToOne(() => User, (update_user) => update_user.userId)
-  @JoinColumn({ name: 'update_user' })
-  updateUser: User;
-
-  @UpdateDateColumn({ name: 'update_time' })
-  updateTime!: Date;
-
-  // 0:未删除 1:已删除
-  @Column({ default: 0, name: 'is_deleted' })
-  isDeleted: number;
 }

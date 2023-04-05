@@ -26,6 +26,7 @@ async function bootstrap(wifiIp) {
       message: '请求太多,请15分钟后再试',
     }),
   );
+
   // 解析请求体（实际是为了解除nestjs对请求体大小的限制）
   app.use(bodyParser.json({ limit: '1mb' }));
 

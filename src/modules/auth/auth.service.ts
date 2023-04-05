@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { LoginAuthDto } from './dto/login-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,13 +11,17 @@ export class AuthService {
   ) {}
 
   // 登录 生成token
-  async signIn(createUserDto: CreateUserDto): Promise<{ accessToken: string }> {
-    const user = await this.usersService.findOneByPhone(createUserDto.phone);
-    if (user?.password !== createUserDto.password) {
-      console.log(user, createUserDto.password);
+  async signIn(loginAuthDto: LoginAuthDto): Promise<{ accessToken: string }> {
+    const user = await this.usersService.findOneByPhone(
+      loginAuthDto.phoneNumber,
+    );
+
+    if (user?.password !== loginAuthDto.password) {
       throw new UnauthorizedException();
     }
-    const payload = { username: user.userName, sub: user.phone };
+
+    const payload = { username: user.userName, sub: user.phoneNumber };
+
     return {
       ...payload,
       accessToken: await this.jwtService.signAsync(payload),

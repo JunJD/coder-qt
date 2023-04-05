@@ -1,16 +1,15 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
+import { UserRole } from '../../entities/user-role.entity';
+
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
-@Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User, UserRole])],
   providers: [UsersService],
   controllers: [UsersController],
-  exports: [UsersService, TypeOrmModule],
+  exports: [UsersService],
 })
-export class UsersModule {
-  constructor(private readonly usersService: UsersService) {}
-}
+export class UsersModule {}

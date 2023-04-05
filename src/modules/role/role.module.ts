@@ -8,8 +8,6 @@ import { RoleService } from './role.service';
   imports: [TypeOrmModule.forFeature([Role])],
   providers: [RoleService],
   controllers: [RoleController],
-  exports: [RoleService, TypeOrmModule],
+  exports: [RoleService],
 })
-export class RoleModule {
-  constructor(private readonly RoleService: RoleService) {}
-}
+export class RoleModule {}

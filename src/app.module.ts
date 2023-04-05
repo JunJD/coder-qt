@@ -17,7 +17,6 @@ import { UsersModule } from './modules/users/users.module';
       password: 'Djj12345.',
       database: 'coder_qt',
       autoLoadEntities: true,
-      // synchronize: true,
     }),
   ],
 })

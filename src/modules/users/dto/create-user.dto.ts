@@ -1,15 +1,22 @@
 import { IsString, IsInt } from 'class-validator';
-import { User } from 'src/entities/user.entity';
+
 export class CreateUserDto {
   @IsString()
-  phone: string;
+  readonly phoneNumber: string;
+
   @IsString()
-  userName?: string;
+  readonly userName?: string;
+
   @IsString()
-  password: string;
+  readonly password: string;
+
   @IsInt()
-  isDeleted?: number;
+  readonly isDeleted?: number;
+
   // 这里的sub是指创建人的手机号，是从token中获取的
   @IsString()
-  sub?: User['phone'];
+  sub?: string;
+
+  @IsString()
+  readonly roleId?: string;
 }

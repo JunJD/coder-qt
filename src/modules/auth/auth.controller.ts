@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { LoginAuthDto } from './dto/login-auth.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -18,10 +18,10 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() createUserDto: CreateUserDto) {
+  signIn(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.signIn({
-      phone: createUserDto.phone,
-      password: createUserDto.password,
+      phoneNumber: loginAuthDto.phoneNumber,
+      password: loginAuthDto.password,
     });
   }
 
