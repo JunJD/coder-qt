@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -16,8 +16,13 @@ export class AuthService {
       loginAuthDto.phoneNumber,
     );
 
+    if (user === null) {
+      // 自定义异常, message: '用户不存在'
+      throw new HttpException('用户不存在', 401);
+    }
+
     if (user?.password !== loginAuthDto.password) {
-      throw new UnauthorizedException();
+      throw new HttpException('密码错误', 401);
     }
 
     const payload = { username: user.userName, sub: user.phoneNumber };

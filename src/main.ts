@@ -6,6 +6,15 @@ import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
 import * as bodyParser from 'body-parser';
 import * as os from 'os';
+import { AnyExceptionFilter } from './filters/error.filter';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
+
+// 重写console.log
+console.log = (function (oriLogFunc) {
+  return function (str) {
+    oriLogFunc.call(console, new Date().toLocaleString() + ' ' + str);
+  };
+})(console.log);
 
 const interfaces = os.networkInterfaces();
 const wifiInterface =
@@ -29,6 +38,15 @@ async function bootstrap(wifiIp) {
 
   // 解析请求体（实际是为了解除nestjs对请求体大小的限制）
   app.use(bodyParser.json({ limit: '1mb' }));
+
+  /**
+   * 全局拦截器
+   */
+  /**异常: 报错catch并透出 */
+  app.useGlobalFilters(new AnyExceptionFilter());
+
+  // 请求添加success字段
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('coder-qt API')
