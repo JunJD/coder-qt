@@ -1,8 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new HttpException('未授权', 401);
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate {
       //这样我们可以在我们的路由处理程序中访问它
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new HttpException('未授权', 401);
     }
     return true;
   }

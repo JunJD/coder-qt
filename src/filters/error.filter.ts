@@ -23,7 +23,7 @@ export class AnyExceptionFilter implements ExceptionFilter<any> {
     response?.status(exception.getStatus()).json({
       success: false,
       error: {
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toLocaleString(),
         path: request.url,
         msg:
           exception.message.message ||

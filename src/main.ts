@@ -11,7 +11,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 // 重写console.log
 console.log = (function (oriLogFunc) {
-  return function (str) {
+  return function (...str) {
     oriLogFunc.call(console, new Date().toLocaleString() + ' ' + str);
   };
 })(console.log);
