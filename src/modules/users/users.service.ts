@@ -30,6 +30,12 @@ export class UsersService implements OnModuleInit {
   async create(createUserDto: CreateUserDto): Promise<User> {
     // 默认角色
     const defaultRole = await this.roleService.findOneByRoleName('user');
+    // 查询用户是否存在
+    const userExist = await this.findOneByPhone(createUserDto.phoneNumber);
+    if (userExist) {
+      return userExist;
+    }
+
     const user = new User();
     user.phoneNumber = createUserDto.phoneNumber;
     user.userName = createUserDto.userName;
@@ -55,10 +61,11 @@ export class UsersService implements OnModuleInit {
     return value;
   }
 
-  // 根据手机号查询用户
+  // 根据手机号查询用户,不包含软删的,并把角色也查出来
   async findOneByPhone(phoneNumber: string): Promise<User> {
     const value = await this.usersRepository.findOne({
-      where: { phoneNumber },
+      relations: ['roles'],
+      where: { phoneNumber, isDeleted: 0 },
     });
     return value;
   }
