@@ -14,6 +14,7 @@ import { PricingModule } from './modules/pricing/pricing.module';
   imports: [
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
+    PricingModule,
     RoleModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -24,7 +25,6 @@ import { PricingModule } from './modules/pricing/pricing.module';
       database: 'coder_qt',
       autoLoadEntities: true,
     }),
-    PricingModule,
   ],
 })
 export class AppModule implements NestModule {
