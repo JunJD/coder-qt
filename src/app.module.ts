@@ -9,6 +9,7 @@ import { CorsMiddleware } from './middlewares/cors.middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
+import { PricingModule } from './modules/pricing/pricing.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
@@ -23,6 +24,7 @@ import { UsersModule } from './modules/users/users.module';
       database: 'coder_qt',
       autoLoadEntities: true,
     }),
+    PricingModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -37,4 +37,11 @@ export class RoleService implements OnModuleInit {
       where: { roleName },
     });
   }
+
+  // 根据角色id查询角色，模糊查询
+  async findOneByRoleId(roleId: string): Promise<Role> {
+    return await this.usersRepository.findOne({
+      where: { roleId },
+    });
+  }
 }

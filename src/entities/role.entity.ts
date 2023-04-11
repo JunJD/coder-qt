@@ -1,15 +1,47 @@
-import { Column, Entity, OneToMany } from 'typeorm';
-import { Common } from './common.entity';
-import { UserRole } from './user-role.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from './user.entity';
 
 @Entity('sys_role')
-export class Role extends Common {
+export class Role {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ unique: true, name: 'role_id', generated: 'uuid', nullable: false })
   roleId: string;
 
-  @Column({ name: 'role_name' })
+  @Column({ name: 'role_name', length: 100 })
   roleName: string;
 
-  @OneToMany(() => UserRole, (userRole) => userRole.roleId)
-  userRoles: UserRole[];
+  @ManyToMany(() => User, (user) => user.roles)
+  users: User[];
+
+  @Column({ name: 'create_user' })
+  creatorId: string;
+
+  @Column({ name: 'update_user' })
+  updaterId: string;
+
+  @CreateDateColumn({
+    name: 'create_time',
+    type: 'timestamp',
+    comment: '创建时间',
+  })
+  createTime!: Date;
+
+  @UpdateDateColumn({
+    name: 'update_time',
+    type: 'timestamp',
+    comment: '创建时间',
+  })
+  updateTime!: Date;
+
+  @Column({ default: 0, name: 'is_deleted' })
+  isDeleted: number;
 }

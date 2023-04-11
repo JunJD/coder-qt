@@ -1,18 +1,58 @@
-import { Column, Entity, OneToMany } from 'typeorm';
-import { Common } from './common.entity';
-import { UserRole } from './user-role.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Role } from './role.entity';
 
 @Entity('sys_user')
-export class User extends Common {
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'user_id' })
   phoneNumber: string;
 
-  @Column({ name: 'user_name' })
+  @Column({ name: 'user_name', length: 100 })
+  @Index({ unique: true })
   userName: string;
 
   @Column()
   password: string;
 
-  @OneToMany(() => UserRole, (userRole) => userRole.UserId)
-  userRoles: UserRole[];
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable({
+    name: 'sys_user_role',
+    joinColumn: { name: 'user_id' },
+    inverseJoinColumn: { name: 'role_id' },
+  }) // 告訴typeorm要建立join table
+  roles: Role[];
+
+  @Column({ name: 'create_user' })
+  creatorId: string;
+
+  @Column({ name: 'update_user' })
+  updaterId: string;
+
+  @CreateDateColumn({
+    name: 'create_time',
+    type: 'timestamp',
+    comment: '创建时间',
+  })
+  createTime!: Date;
+
+  @UpdateDateColumn({
+    name: 'update_time',
+    type: 'timestamp',
+    comment: '创建时间',
+  })
+  updateTime!: Date;
+
+  @Column({ default: 0, name: 'is_deleted' })
+  isDeleted: number;
 }
