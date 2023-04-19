@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
+import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import * as os from 'os';
 import { AnyExceptionFilter } from './filters/error.filter';
@@ -47,6 +48,8 @@ async function bootstrap(wifiIp) {
 
   // 请求添加success字段
   app.useGlobalInterceptors(new TransformInterceptor());
+
+  app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle('coder-qt API')

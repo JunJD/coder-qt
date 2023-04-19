@@ -8,7 +8,7 @@ import { CreatePricingDto } from './dto/CreatePricingDto';
 export class PricingService {
   constructor(
     @InjectRepository(Pricing)
-    private readonly pricingRepository: Repository<Pricing>
+    private readonly pricingRepository: Repository<Pricing>,
   ) {}
   // 创建报价类
   async create(createPricingDto: CreatePricingDto): Promise<Pricing> {
