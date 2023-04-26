@@ -10,6 +10,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { PricingModule } from './modules/pricing/pricing.module';
+import { ChatGptModule } from './modules/chat-gpt//chat-gpt.module';
+import { ChatCoderModule } from './modules/chat_coderqt/chat_coderqt.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
@@ -25,6 +27,8 @@ import { PricingModule } from './modules/pricing/pricing.module';
       database: 'coder_qt',
       autoLoadEntities: true,
     }),
+    ChatGptModule,
+    ChatCoderModule,
   ],
 })
 export class AppModule implements NestModule {

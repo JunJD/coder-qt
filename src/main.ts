@@ -49,7 +49,7 @@ async function bootstrap(wifiIp) {
   // 请求添加success字段
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle('coder-qt API')
