@@ -28,8 +28,19 @@ export class UsersService implements OnModuleInit {
 
   // 创建用户
   async create(createUserDto: CreateUserDto): Promise<User> {
-    // 默认角色
-    const defaultRole = await this.roleService.findOneByRoleName('user');
+    let userRole;
+    if (!createUserDto.roleId) {
+      // 创建用户时，如果没有传角色id，则默认为user角色
+      const defaultRole = await this.roleService.findOneByRoleId(
+        'ffe76a47-4cf1-44c3-8e11-d7b7fc799eeb',
+      );
+      userRole = defaultRole;
+    } else {
+      // 创建用户时，如果传了角色id，则根据角色id查询角色
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      userRole = await this.roleService.findOneByRoleId(createUserDto.roleId);
+    }
+
     // 查询用户是否存在
     const userExist = await this.findOneByPhone(createUserDto.phoneNumber);
     if (userExist) {
@@ -40,7 +51,7 @@ export class UsersService implements OnModuleInit {
     user.phoneNumber = createUserDto.phoneNumber;
     user.userName = createUserDto.userName;
     user.password = createUserDto.password;
-    user.roles = [defaultRole];
+    user.roles = [userRole];
     return this.usersRepository.save(user);
   }
 
