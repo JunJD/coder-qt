@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from 'src/entities/role.entity';
 @Injectable()
@@ -34,14 +34,29 @@ export class RoleService implements OnModuleInit {
   // 根据角色名查询角色，模糊查询
   async findOneByRoleName(roleName: string): Promise<Role> {
     return await this.usersRepository.findOne({
-      where: { roleName },
+      where: { roleName: Like(`%${roleName}%`) },
     });
   }
 
-  // 根据角色id查询角色，模糊查询
+  // 根据角色id查询角色，精确查询
   async findOneByRoleId(roleId: string): Promise<Role> {
     return await this.usersRepository.findOne({
-      where: { roleId },
+      where: { roleId: roleId },
+    });
+  }
+
+  // 查询所有的角色,不包含被软删除的角色
+  async findAll(): Promise<Role[]> {
+    return await this.usersRepository.find({
+      where: { isDeleted: 0 },
+    });
+  }
+
+  // 查询所有的角色以及对应的所有用户
+  async findAllAndUsers(): Promise<Role[]> {
+    return await this.usersRepository.find({
+      where: { isDeleted: 0 },
+      relations: ['users'],
     });
   }
 }

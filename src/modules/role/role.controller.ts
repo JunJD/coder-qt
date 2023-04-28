@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from 'src/entities/role.entity';
 import { RoleService } from './role.service';
@@ -22,5 +22,17 @@ export class RoleController {
   async findOneByRoleName(@Body() findRoleDto: FindRoleDto): Promise<Role> {
     const roleName = findRoleDto.roleName;
     return this.roleService.findOneByRoleName(roleName);
+  }
+
+  // 查询所有的角色
+  @Get('findAll')
+  async findAll(): Promise<Role[]> {
+    return this.roleService.findAll();
+  }
+
+  // 查询所有的角色以及对应的所有用户
+  @Get('findRolesByUser')
+  async findRolesByUser(): Promise<Partial<Role>[]> {
+    return this.roleService.findAllAndUsers();
   }
 }

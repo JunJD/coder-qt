@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '../../entities/user.entity';
 import { RoleService } from '../role/role.service';
+import { Role } from 'src/entities/role.entity';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -61,6 +62,18 @@ export class UsersService implements OnModuleInit {
     const role = await this.roleService.findOneByRoleId(roleId);
     user.roles = [...user.roles, role];
     return this.usersRepository.save(user);
+  }
+
+  // 根据用户查询拥有的角色id和角色名称
+  async findRolesByUser(phoneNumber: string): Promise<Partial<Role>[]> {
+    const user = await this.findOneByPhone(phoneNumber);
+    const roles = user.roles.map((role) => {
+      return {
+        roleId: role.roleId,
+        roleName: role.roleName,
+      };
+    });
+    return roles;
   }
 
   // 查询所有用户,不包含软删的,并把角色也查出来
