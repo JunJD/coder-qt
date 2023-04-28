@@ -12,12 +12,14 @@ import { UsersModule } from './modules/users/users.module';
 import { PricingModule } from './modules/pricing/pricing.module';
 import { ChatGptModule } from './modules/chat-gpt//chat-gpt.module';
 import { ChatCoderModule } from './modules/chat_coderqt/chat_coderqt.module';
+import { CalendarModule } from './modules/calendar/calendar.module';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
     PricingModule,
     RoleModule,
+    CalendarModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',

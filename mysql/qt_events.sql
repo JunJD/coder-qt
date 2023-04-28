@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS sys_events (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id VARCHAR(255) UNIQUE NOT NULL,
+    event_name VARCHAR(100),
+    start_date_time DATETIME,
+    end_date_time DATETIME,
+    event_type_id INT,
+    location VARCHAR(255),
+    description TEXT,
+    status VARCHAR(255),
+    create_user INT,
+    update_user INT,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    user_id INT,
+    FOREIGN KEY (event_type_id) REFERENCES event_types(id),
+    FOREIGN KEY (create_user) REFERENCES users(id),
+    FOREIGN KEY (update_user) REFERENCES users(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
