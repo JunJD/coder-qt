@@ -6,6 +6,7 @@ import { Events } from 'src/entities/calendar/events.entity';
 import { CreateEventDto } from './dto/createEvents.dto';
 import { UsersService } from '../users/users.service';
 import { findEventDto } from './dto/findEventsByPhone.dto';
+import { UpdateEventDto } from './dto/updateEventDto.dto';
 
 @Injectable()
 export class CalendarService {
@@ -46,8 +47,6 @@ export class CalendarService {
   }
 
   // 批量新增事件
-
-  // 批量新增事件
   async addEvents(createEventsDto: CreateEventDto[]): Promise<Events[]> {
     const events: Events[] = [];
     for (const createEventDto of createEventsDto) {
@@ -71,6 +70,35 @@ export class CalendarService {
       events.push(event);
     }
     return await this.eventsRepository.save(events);
+  }
+
+  // 删除事件
+  async deleteEvent(id: number): Promise<void> {
+    await this.eventsRepository.delete(id);
+  }
+
+  // 编辑事件
+  async editEvent(updateEventDto: UpdateEventDto): Promise<Events> {
+    const event = await this.eventsRepository.findOne({
+      where: { id: updateEventDto.id },
+    });
+    event.eventsName = updateEventDto.eventsName;
+    event.startDateTime = updateEventDto.startDateTime;
+    event.endDateTime = updateEventDto.endDateTime;
+    // event.allDay = updateEventDto.allDay;
+    event.location = updateEventDto.location;
+    event.description = updateEventDto.description;
+    event.status = updateEventDto.status;
+    // 根据事件类型id查询事件类型
+    const eventType = await this.findTypeById(updateEventDto.eventTypeId);
+    event.eventType = eventType;
+    // 根据创建者id查询创建者
+    const creator = await this.usersService.findOneByPhone(
+      updateEventDto.creatorId,
+    );
+    event.creator = creator;
+    event.user = creator;
+    return await this.eventsRepository.save(event);
   }
 
   // 根据数据库现有条件任何条件查询事件

@@ -3,6 +3,7 @@ import { EventType } from './../../entities/calendar/eventType.entity';
 import { CalendarService } from './calendar.service';
 import { CreateEventDto } from './dto/createEvents.dto';
 import { findEventDto } from './dto/findEventsByPhone.dto';
+import { UpdateEventDto } from './dto/updateEventDto.dto';
 
 @Controller('calendar')
 export class CalendarController {
@@ -35,6 +36,18 @@ export class CalendarController {
     }));
 
     return this.calendarService.addEvents(events);
+  }
+
+  // 删除事件
+  @Post('delete')
+  async deleteEvent(@Body() dto: UpdateEventDto): Promise<any> {
+    return this.calendarService.deleteEvent(dto.id);
+  }
+
+  // 编辑事件
+  @Post('edit')
+  async editEvent(@Body() dto: UpdateEventDto): Promise<any> {
+    return this.calendarService.editEvent(dto);
   }
 
   @Post()
