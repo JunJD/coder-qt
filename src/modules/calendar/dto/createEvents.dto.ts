@@ -5,13 +5,13 @@ export class CreateEventDto {
   readonly eventsName: string;
 
   @IsString()
-  readonly startDateTime: string;
+  readonly startDateTime: Date;
 
   @IsString()
-  readonly endDateTime: string;
+  readonly endDateTime: Date;
 
   @IsInt()
-  readonly eventTypeId: number;
+  readonly eventTypeId: string;
 
   @IsString()
   readonly location: string;

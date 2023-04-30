@@ -1,6 +1,8 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { EventType } from './../../entities/calendar/eventType.entity';
 import { CalendarService } from './calendar.service';
+import { CreateEventDto } from './dto/createEvents.dto';
+import { findEventDto } from './dto/findEventsByPhone.dto';
 
 @Controller('calendar')
 export class CalendarController {
@@ -9,5 +11,42 @@ export class CalendarController {
   @Get('type/findAll')
   async findTypeAll(): Promise<Partial<EventType>[]> {
     return this.calendarService.findTypeAll();
+  }
+
+  // 新增事件
+  @Post('add')
+  async addEvent(@Req() req): Promise<any> {
+    const createEventDto: CreateEventDto = req.body;
+
+    return this.calendarService.addEvent({
+      ...createEventDto,
+      creatorId: req.user.sub,
+    });
+  }
+
+  // 批量新增事件
+  @Post('add/batch')
+  async addEvents(@Req() req): Promise<any> {
+    const createEventDtos: CreateEventDto[] = req.body;
+
+    const events = createEventDtos.map((createEventDto) => ({
+      ...createEventDto,
+      creatorId: req.user.sub,
+    }));
+
+    return this.calendarService.addEvents(events);
+  }
+
+  @Post()
+  // 根据任何条件查询事件
+  @Post('find')
+  async findEvent(@Body() dto: findEventDto): Promise<any> {
+    return this.calendarService.findEvent(dto);
+  }
+
+  // 查询start到end时间段内的事件
+  @Post('findBetween')
+  async findEventBetween(@Body() dto: findEventDto): Promise<any> {
+    return this.calendarService.findEventBetween(dto);
   }
 }

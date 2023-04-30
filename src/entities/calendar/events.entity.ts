@@ -50,12 +50,14 @@ export class Events {
   status: string;
 
   // 事件创建者
-  @Column({ name: 'create_user' })
-  creatorId: string;
+  @ManyToOne(() => User, (user) => user.events)
+  @JoinColumn({ name: 'create_user' })
+  creator: User;
 
   // 事件更新者
-  @Column({ name: 'update_user' })
-  updaterId: string;
+  @ManyToOne(() => User, (user) => user.events)
+  @JoinColumn({ name: 'update_user' })
+  updater: User;
 
   @CreateDateColumn({
     name: 'create_time',
