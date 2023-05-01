@@ -16,7 +16,7 @@ import { ChatCoderService } from './chat_coderqt.service';
         'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'content-type': 'application/json;charset=UTF-8',
         Authorization:
-          'Bearer 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',
+          'Bearer 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',
       },
     }),
   ],

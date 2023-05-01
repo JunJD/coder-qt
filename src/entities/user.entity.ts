@@ -5,9 +5,11 @@ import {
   Index,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Events } from './calendar/events.entity';
 import { Role } from './role.entity';
 
 @Entity('sys_user')
@@ -32,6 +34,10 @@ export class User {
     inverseJoinColumn: { name: 'role_id' },
   }) // 告訴typeorm要建立join table
   roles: Role[];
+
+  // 一对多（事件）
+  @OneToMany(() => Events, (events) => events.user, { eager: true })
+  events: Events[];
 
   @Column({ name: 'create_user' })
   creatorId: string;
