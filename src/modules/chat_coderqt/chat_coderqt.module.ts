@@ -11,12 +11,12 @@ import { ChatCoderService } from './chat_coderqt.service';
       // maxRedirects: 5,
       baseURL: 'https://api.openai.com',
       headers: {
-        accept: 'application/json, text/plain, */*',
-        'accept-encoding': 'gzip, deflate, br',
-        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        // accept: 'application/json, text/plain, */*',
+        // 'accept-encoding': 'gzip, deflate, br',
+        // 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'content-type': 'application/json;charset=UTF-8',
         Authorization:
-          'Bearer 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',
+          'Bearer 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',
       },
     }),
   ],

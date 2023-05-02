@@ -22,7 +22,7 @@ import { CalendarModule } from './modules/calendar/calendar.module';
     CalendarModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '38.55.131.7',
       port: 3306,
       username: 'root',
       password: 'Djj12345.',
