@@ -8,7 +8,7 @@ export class ChatCoderService {
   constructor(private readonly httpService: HttpService) {}
 
   async generateText(prompt: string): Promise<{ result: any }> {
-    console.log('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');
+    console.log('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');
     const result = await firstValueFrom(
       this.httpService
         .post('v1/chat/completions', {
